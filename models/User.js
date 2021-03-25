@@ -5,13 +5,36 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
         unique : true,
-        dropDups: true
+        dropDups: true,
+        required: true,
+    },
+    firstname: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    phonenumber: {
+      type: Number,
+      trim: true
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        trim: true
+    },
+    isAdmin : {
+      type: Boolean,
+      default: false
+    },
+    bookingRequests : {
+      type: Array,
+      default: []
     }
 });
 
@@ -20,7 +43,6 @@ UserSchema.pre(
     async function(next) {
       const user = this;
       const hash = await bcrypt.hash(this.password, 10);
-  
       this.password = hash;
       next();
     }
